@@ -1,0 +1,5 @@
+C:\Users\bryancmiller\GitHub\FMSC.Core\FMSC.Core\bin\Debug\FMSC.Core.dll
+C:\Users\bryancmiller\GitHub\FMSC.Core\FMSC.Core\bin\Debug\FMSC.Core.pdb
+C:\Users\bryancmiller\GitHub\FMSC.Core\FMSC.Core\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\bryancmiller\GitHub\FMSC.Core\FMSC.Core\obj\Debug\FMSC.Core.dll
+C:\Users\bryancmiller\GitHub\FMSC.Core\FMSC.Core\obj\Debug\FMSC.Core.pdb
