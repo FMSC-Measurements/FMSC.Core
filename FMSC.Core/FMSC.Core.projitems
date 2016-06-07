@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>ca9c3e2e-2e19-43e3-9890-e031941aa7fe</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>FMSC.Core</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)System\Action.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)System\ComponentModel\INotifyDataErrorInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)System\Linq\IEnumerableExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)System\Runtime.CompilerServices\ExtensionAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)System\Text\StringBuilderExtensions.cs" />
+  </ItemGroup>
+</Project>
