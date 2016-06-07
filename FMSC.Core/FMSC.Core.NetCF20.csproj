@@ -56,6 +56,9 @@
     <Compile Include="FMSC.Core.NetCF\Text\StringBuilderExtensions.cs" />
     <Compile Include="FMSC.Core.NetCF\Util\DeviceInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="System\ComponentModel\DataErrorsChangedEventArgs.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="System\ComponentModel\INotifyDataErrorInfo.cs" />
     <Compile Include="System\DoubleExtentions.cs" />
     <Compile Include="System\FloatExtentions.cs" />

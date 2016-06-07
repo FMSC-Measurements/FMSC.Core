@@ -38,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="System\ComponentModel\DataErrorsChangedEventArgs.cs" />
     <Compile Include="System\ComponentModel\INotifyDataErrorInfo.cs">
       <SubType>Code</SubType>
     </Compile>
