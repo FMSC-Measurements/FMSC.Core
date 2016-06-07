@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
-namespace FMSC.Core.System.ComponentModel
+namespace System.ComponentModel
 {
     public interface INotifyDataErrorInfo
     {
