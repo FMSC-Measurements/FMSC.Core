@@ -23,8 +23,6 @@ namespace System
 {
     using System.Runtime.CompilerServices;
 
-    public delegate void Action<T>(T obj);
-
     public delegate void Action();
 
     public delegate TResult Func<TResult>();
