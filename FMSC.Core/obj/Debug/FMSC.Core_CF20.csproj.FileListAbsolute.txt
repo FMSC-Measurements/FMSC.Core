@@ -1,5 +1,0 @@
-C:\Users\bryancmiller\GitHub\FMSC.Core\FMSC.Core\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\bryancmiller\GitHub\FMSC.Core\FMSC.Core\bin\CF20\Debug\FMSC.Core_CF20.dll
-C:\Users\bryancmiller\GitHub\FMSC.Core\FMSC.Core\bin\CF20\Debug\FMSC.Core_CF20.pdb
-C:\Users\bryancmiller\GitHub\FMSC.Core\FMSC.Core\obj\Debug\FMSC.Core_CF20.dll
-C:\Users\bryancmiller\GitHub\FMSC.Core\FMSC.Core\obj\Debug\FMSC.Core_CF20.pdb
