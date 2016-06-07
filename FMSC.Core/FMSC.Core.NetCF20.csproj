@@ -23,7 +23,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\NetCF20\Debug\</OutputPath>
+    <OutputPath>bin\Debug\NetCF20\</OutputPath>
     <DefineConstants>TRACE;DEBUG;NETCF_20 NETCF</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
@@ -35,7 +35,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\NetCF20\Release\</OutputPath>
+    <OutputPath>bin\Release\NetCF20\</OutputPath>
     <DefineConstants>TRACE;NETCF_20 NETCF</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
