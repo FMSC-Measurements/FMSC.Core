@@ -28,10 +28,4 @@ namespace System
     public delegate TResult Func<TResult>();
 
     public delegate TResult Func<T, TResult>(T arg);
-
-    public delegate int Comparison<T>(T x, T y);
-
-    public delegate TOutput Converter<TInput, TOutput>(TInput input);
-
-    public delegate bool Predicate<T>(T obj);
 }
