@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>USFS FMSC</Authors>
+    <Company>USFS FMSC</Company>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy /Y &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;$(SolutionDir)..\libs\$(ProjectName).dll&quot;" />
+  </Target>
+
+  <ItemGroup>
+    <Reference Include="CSUtilSlim">
+      <HintPath>..\..\libs\CSUtilSlim.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2050
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMSC.Core.Windows", "FMSC.Core.Windows\FMSC.Core.Windows.csproj", "{A4D158CF-8C45-481D-89F1-59E1AC22FD1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMSC.Core", "FMSC.Core\FMSC.Core.csproj", "{0F913A7A-84C9-4CAB-B1BB-AF1C09A6C967}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A4D158CF-8C45-481D-89F1-59E1AC22FD1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4D158CF-8C45-481D-89F1-59E1AC22FD1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4D158CF-8C45-481D-89F1-59E1AC22FD1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4D158CF-8C45-481D-89F1-59E1AC22FD1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F913A7A-84C9-4CAB-B1BB-AF1C09A6C967}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F913A7A-84C9-4CAB-B1BB-AF1C09A6C967}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F913A7A-84C9-4CAB-B1BB-AF1C09A6C967}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F913A7A-84C9-4CAB-B1BB-AF1C09A6C967}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C9DEEE5A-C174-46E0-84DD-AA7A9D075A33}
+	EndGlobalSection
+EndGlobal
