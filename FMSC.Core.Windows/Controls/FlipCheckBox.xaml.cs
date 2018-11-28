@@ -39,32 +39,46 @@ namespace FMSC.Core.Windows.Controls
             set { SetValue(FlipDurationProperty, value); }
         }
 
-
+        public static readonly DependencyProperty IsThreeStateProperty =
+            DependencyProperty.Register(nameof(IsThreeState), typeof(bool), typeof(FlipCheckBox));
+        public bool IsThreeState
+        {
+            get { return (bool)GetValue(IsThreeStateProperty); }
+            set { SetValue(IsThreeStateProperty, value); }
+        }
 
         public static readonly DependencyProperty IsCheckedProperty =
-            DependencyProperty.Register(nameof(IsChecked), typeof(bool), typeof(FlipCheckBox));
-        public bool IsChecked
+            DependencyProperty.Register(nameof(IsChecked), typeof(bool?), typeof(FlipCheckBox));
+
+        private bool? _IsChecked;
+        public bool? IsChecked
         {
-            get { return (bool)GetValue(IsCheckedProperty); }
+            get { return _IsChecked; }// (bool?)GetValue(IsCheckedProperty); }
             set
             {
                 if (IsChecked != value)
                 {
                     SetValue(IsCheckedProperty, value);
+                    _IsChecked = value;
                     Flip(value);
                 }
             }
         }
         
-        private void Flip(bool front)
+        private void Flip(bool? @checked)
         {
             var animation = new DoubleAnimation()
             {
                 Duration = FlipDuration,
                 EasingFunction = EasingFunction,
             };
-            animation.To = front ? -1 : 1;
+            animation.To = @checked != false ? -1 : 1;
             transform.BeginAnimation(ScaleTransform.ScaleXProperty, animation);
+
+            if (Front != null)
+            {
+                Front.Opacity = @checked == null ? 0.5 : 1;
+            }
 
             OnPropertyChanged(new PropertyChangedEventArgs(nameof(IsChecked)));
             OnCheckedChange(new EventArgs());
@@ -78,8 +92,7 @@ namespace FMSC.Core.Windows.Controls
 
             this.Loaded += (o, s) =>
             {
-                if (IsChecked)
-                    Flip(true);
+                Flip(IsChecked);
             };
         }
         
@@ -104,7 +117,17 @@ namespace FMSC.Core.Windows.Controls
         {
             base.OnMouseDown(e);
 
-            IsChecked = !IsChecked;
+            if (IsThreeState)
+            {
+                if (IsChecked == true)
+                    IsChecked = false;
+                else if (IsChecked == false)
+                    IsChecked = null;
+                else
+                    IsChecked = true;
+            }
+            else
+                IsChecked = IsChecked == false;
         }
     }
 
