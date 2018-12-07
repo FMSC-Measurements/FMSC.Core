@@ -1,9 +1,11 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace FMSC.Core
 {
     public enum Distance
     {
+        [Description("Feet Tenths")]
         FeetTenths = 0,
         Meters = 1,
         Chains = 2,

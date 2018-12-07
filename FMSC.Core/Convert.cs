@@ -23,6 +23,25 @@ namespace FMSC.Core
         private const double MetersToChains_Coeff = MetersToFeet_Coeff / 66d;
         private const double YardsToChains_Coeff = 3d / 66d;
 
+
+        //private const double CubicInchToBoardFoot_Coeff = 1d / 144d;
+        private const double CubicFootToBoardFoot_Coeff = 12d;
+        private static readonly double CubicMeterToBoardFoot_Coeff = Math.Pow(MetersToFeet_Coeff, 3) * 12d;
+
+        //private const double BoardFootToCubicInch_Coeff = 144d;
+        //private const double CubicFootToCubicInch_Coeff = 1728d;
+        //private static readonly double CubicMeterToCubicInch_Coeff = Math.Pow(MetersToFeet_Coeff, 3) * 144d;
+
+        private const double BoardFootToCubicFoot_Coeff = 1d / 12d;
+        //private const double CubicInchToCubicFoot_Coeff = 1d / 1728d;
+        private static readonly double CubicMeterToCubicFoot_Coeff = Math.Pow(MetersToFeet_Coeff, 3);
+
+        private static readonly double BoardFootToCubicMeter_Coeff = 1d / CubicMeterToBoardFoot_Coeff;
+        //private static readonly double CubicInchToCubicMeter_Coeff = 1d / CubicMeterToCubicInch_Coeff;
+        private static readonly double CubicFootToCubicMeter_Coeff = 1d / CubicMeterToCubicFoot_Coeff;
+
+
+
         private const double Meters2ToAcres_Coeff = 0.00024711;
         private const double Meters2ToHectares_Coeff = 0.0001;
 
@@ -67,9 +86,9 @@ namespace FMSC.Core
             return dist * 1000d;
         }
 
-        public static double ToFeetTenths(double distance, Distance dist)
+        public static double ToFeetTenths(double distance, Distance distType)
         {
-            switch (dist)
+            switch (distType)
             {
                 case Core.Distance.FeetTenths:
                     return distance;
@@ -84,9 +103,9 @@ namespace FMSC.Core
             throw new Exception("Invalid Option");
         }
 
-        public static double ToYards(double distance, Distance dist)
+        public static double ToYards(double distance, Distance distType)
         {
-            switch (dist)
+            switch (distType)
             {
                 case Core.Distance.FeetTenths:
                     return distance * FeetToYards_Coeff;
@@ -101,9 +120,9 @@ namespace FMSC.Core
             throw new Exception("Invalid Option");
         }
 
-        public static double ToMeters(double distance, Distance dist)
+        public static double ToMeters(double distance, Distance distType)
         {
-            switch (dist)
+            switch (distType)
             {
                 case Core.Distance.FeetTenths:
                     return distance * FeetToMeters_Coeff;
@@ -118,9 +137,9 @@ namespace FMSC.Core
             throw new Exception("Invalid Option");
         }
 
-        public static double ToChains(double distance, Distance dist)
+        public static double ToChains(double distance, Distance distType)
         {
-            switch (dist)
+            switch (distType)
             {
                 case Core.Distance.FeetTenths:
                     return distance * FeetToChains_Coeff;
@@ -130,6 +149,75 @@ namespace FMSC.Core
                     return distance * YardsToChains_Coeff;
                 case Core.Distance.Chains:
                     return distance;
+            }
+
+            throw new Exception("Invalid Option");
+        }
+
+
+        public static double Volume(double volume, Volume to, Volume from)
+        {
+            if (to == from)
+                return volume;
+
+            switch (to)
+            {
+                case Core.Volume.BoardFoot: return ToBoardFeet(volume, from);
+                //case Core.Volume.CubicInch: return ToCubicInch(volume, from);
+                case Core.Volume.CubicFoot: return ToCubicFoot(volume, from);
+                case Core.Volume.CubicMeter: return ToCubicMeter(volume, from);
+            }
+
+            throw new Exception("Invalid Option");
+        }
+
+        public static double ToBoardFeet(double volume, Volume volType)
+        {
+            switch (volType)
+            {
+                case Core.Volume.BoardFoot: return volume;
+                //case Core.Volume.CubicInch: return CubicInchToBoardFoot_Coeff * volume;
+                case Core.Volume.CubicFoot: return  CubicFootToBoardFoot_Coeff * volume;
+                case Core.Volume.CubicMeter: return CubicMeterToBoardFoot_Coeff * volume;
+            }
+
+            throw new Exception("Invalid Option");
+        }
+
+        //public static double ToCubicInch(double volume, Volume volType)
+        //{
+        //    switch (volType)
+        //    {
+        //        case Core.Volume.BoardFoot: return BoardFootToCubicInch_Coeff * volume;
+        //        case Core.Volume.CubicInch: return volume;
+        //        case Core.Volume.CubicFoot: return CubicFootToCubicInch_Coeff * volume;
+        //        case Core.Volume.CubicMeter: return CubicMeterToCubicInch_Coeff * volume;
+        //    }
+
+        //    throw new Exception("Invalid Option");
+        //}
+
+        public static double ToCubicFoot(double volume, Volume volType)
+        {
+            switch (volType)
+            {
+                case Core.Volume.BoardFoot: return BoardFootToCubicFoot_Coeff * volume;
+                //case Core.Volume.CubicInch: return CubicInchToCubicFoot_Coeff * volume;
+                case Core.Volume.CubicFoot: return volume;
+                case Core.Volume.CubicMeter: return CubicMeterToCubicFoot_Coeff * volume;
+            }
+
+            throw new Exception("Invalid Option");
+        }
+
+        public static double ToCubicMeter(double volume, Volume volType)
+        {
+            switch (volType)
+            {
+                case Core.Volume.BoardFoot: return BoardFootToCubicMeter_Coeff * volume;
+                //case Core.Volume.CubicInch: return CubicInchToCubicMeter_Coeff * volume;
+                case Core.Volume.CubicFoot: return CubicFootToCubicMeter_Coeff * volume;
+                case Core.Volume.CubicMeter: return volume;
             }
 
             throw new Exception("Invalid Option");

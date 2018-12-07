@@ -2,6 +2,9 @@
 using System.Windows.Markup;
 using System.Linq;
 using System.Collections.Generic;
+using System.Windows.Data;
+using System.ComponentModel;
+using System.Globalization;
 
 namespace FMSC.Core.Windows.ComponentModel
 {
@@ -23,6 +26,29 @@ namespace FMSC.Core.Windows.ComponentModel
             IEnumerable<string> exclusions = Exclusions.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(e => e.ToLower()).ToArray();
 
             return Enum.GetValues(_type).Cast<object>().Where(e => !exclusions.Contains(e.ToString().ToLower()));
+        }
+    }
+
+    public class EnumDescriptionConverter : IValueConverter
+    {
+        private string GetDescription(Enum @enum)
+        {
+            object[] attrs = @enum.GetType().GetField(@enum.ToString()).GetCustomAttributes(false);
+
+            if (attrs.Length > 0)
+                return (attrs[0] as DescriptionAttribute).Description;
+            else
+                return @enum.ToString();
+        }
+
+        object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return GetDescription((Enum)value);
+        }
+
+        object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return string.Empty;
         }
     }
 }
