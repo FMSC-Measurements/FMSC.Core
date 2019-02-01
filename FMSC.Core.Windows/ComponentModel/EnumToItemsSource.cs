@@ -35,15 +35,13 @@ namespace FMSC.Core.Windows.ComponentModel
         {
             object[] attrs = @enum.GetType().GetField(@enum.ToString()).GetCustomAttributes(false);
 
-            if (attrs.Length > 0)
-                return (attrs[0] as DescriptionAttribute).Description;
-            else
-                return @enum.ToString();
+            return (attrs != null && attrs.Length > 0 && attrs[0] is DescriptionAttribute descAttr) ? 
+                descAttr.Description ?? @enum.ToString() : @enum.ToString();
         }
 
         object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return GetDescription((Enum)value);
+            return value != null ? GetDescription((Enum)value) : String.Empty;
         }
 
         object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
