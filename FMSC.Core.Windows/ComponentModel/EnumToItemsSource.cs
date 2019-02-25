@@ -31,7 +31,7 @@ namespace FMSC.Core.Windows.ComponentModel
 
     public class EnumDescriptionConverter : IValueConverter
     {
-        private string GetDescription(Enum @enum)
+        public static string GetDescription(Enum @enum)
         {
             object[] attrs = @enum.GetType().GetField(@enum.ToString()).GetCustomAttributes(false);
 
