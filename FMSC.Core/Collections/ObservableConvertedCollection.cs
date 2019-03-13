@@ -7,7 +7,7 @@ using System.ComponentModel;
 
 namespace FMSC.Core.Collections
 {
-    public class ObservableConvertedCollection<TIn, TOut> : IList<TOut>, ICollection<TOut>, IEnumerable<TOut>, IEnumerable, IList, ICollection, IReadOnlyList<TOut>, IReadOnlyCollection<TOut>, INotifyCollectionChanged, INotifyPropertyChanged
+    public class ObservableConvertedCollection<TIn, TOut> : IReadOnlyList<TOut>, IReadOnlyCollection<TOut>, INotifyCollectionChanged, INotifyPropertyChanged
     {
         event NotifyCollectionChangedEventHandler INotifyCollectionChanged.CollectionChanged
         {
@@ -29,58 +29,18 @@ namespace FMSC.Core.Collections
         
         private ObservableCollection<TOut> _EditableCollection;
         private Dictionary<TIn, TOut> _ConvertedLookup;
-        private ReadOnlyObservableCollection<TOut> _ReadOnlyCollection;
         private Func<TIn, TOut> _Converter;
 
         private object locker = new object();
+        
 
-        #region Properties
-        public int Count { get { return _ReadOnlyCollection.Count; } }
-
-        int ICollection<TOut>.Count { get { return _ReadOnlyCollection.Count; } }
-
-        int ICollection.Count { get { return _ReadOnlyCollection.Count; } }
-
-
+        public int Count { get { return _EditableCollection.Count; } }
+        
         public TOut this[int index]
         {
-            get { return _ReadOnlyCollection[index]; }
+            get { return _EditableCollection[index]; }
         }
-
-        object IList.this[int index]
-        {
-            get { return _ReadOnlyCollection[index]; }
-            set { throw new Exception("Can Not Set"); }
-        }
-
-        TOut IList<TOut>.this[int index]
-        {
-            get { return _ReadOnlyCollection[index]; }
-            set { throw new Exception("Can Not Set"); }
-        }
-
-
-        public bool IsReadOnly { get { return true; } }
-
-        bool ICollection<TOut>.IsReadOnly { get { return true; } }
-
-        bool IList.IsReadOnly { get { return true; } }
-
-
-        bool IList.IsFixedSize { get { return false; } }
-
-        object ICollection.SyncRoot
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        bool ICollection.IsSynchronized { get { return false; } }
-        #endregion
-
-
+        
 
         public ObservableConvertedCollection(ObservableCollection<TIn> source, Func<TIn, TOut> converter) : base()
         {
@@ -97,7 +57,6 @@ namespace FMSC.Core.Collections
             }
 
             _EditableCollection = new ObservableCollection<TOut>(osource);
-            _ReadOnlyCollection = new ReadOnlyObservableCollection<TOut>(_EditableCollection);
 
             ((INotifyCollectionChanged)source).CollectionChanged += Source_CollectionChanged;
 
@@ -189,105 +148,27 @@ namespace FMSC.Core.Collections
         {
             PropertyChanged?.Invoke(this, args);
         }
-
-
+        
 
         public int IndexOf(TOut item)
         {
-            return _ReadOnlyCollection.IndexOf(item);
-        }
-
-        int IList.IndexOf(object value)
-        {
-            return _ReadOnlyCollection.IndexOf((TOut)value);
+            return _EditableCollection.IndexOf(item);
         }
         
-
         public bool Contains(TOut item)
         {
-            return _ReadOnlyCollection.Contains(item);
-        }
-        
-        bool IList.Contains(object value)
-        {
-            return _ReadOnlyCollection.Contains((TOut)value);
+            return _EditableCollection.Contains(item);
         }
         
 
         public IEnumerator<TOut> GetEnumerator()
         {
-            return _ReadOnlyCollection.GetEnumerator();
+            return _EditableCollection.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _ReadOnlyCollection.GetEnumerator();
+            return _EditableCollection.GetEnumerator();
         }
-
-
-        #region Ignored Methods
-        void IList<TOut>.Insert(int index, TOut item)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IList<TOut>.RemoveAt(int index)
-        {
-            throw new NotImplementedException();
-        }
-
-        void ICollection<TOut>.Add(TOut item)
-        {
-            throw new NotImplementedException();
-        }
-
-        void ICollection<TOut>.Clear()
-        {
-            throw new NotImplementedException();
-        }
-
-        void ICollection<TOut>.CopyTo(TOut[] array, int arrayIndex)
-        {
-            for (int i = arrayIndex; i < Count; i++)
-            {
-                array[i] = _EditableCollection[i];
-            }
-        }
-
-        bool ICollection<TOut>.Remove(TOut item)
-        {
-            throw new NotImplementedException();
-        }
-
-        int IList.Add(object value)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IList.Clear()
-        {
-            throw new NotImplementedException();
-        }
-        
-        void IList.Insert(int index, object value)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IList.Remove(object value)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IList.RemoveAt(int index)
-        {
-            throw new NotImplementedException();
-        }
-
-        void ICollection.CopyTo(Array array, int index)
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
     }
 }

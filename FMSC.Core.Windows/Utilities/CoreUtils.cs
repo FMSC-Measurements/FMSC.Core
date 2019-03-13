@@ -1,5 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Reflection;
+using System.Windows;
 
 namespace FMSC.Core.Windows.Utilities
 {
@@ -57,6 +59,11 @@ namespace FMSC.Core.Windows.Utilities
             if (key != null && (handler = key.GetValue("", "None") as string) != null && handler != "None")
                 return true;
             return false;
+        }
+
+        public static bool IsShownAsDialog(this Window window)
+        {
+            return (bool)typeof(Window).GetField("_showingAsDialog", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(window);
         }
     }
 }
