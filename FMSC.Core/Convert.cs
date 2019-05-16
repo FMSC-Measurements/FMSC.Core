@@ -9,7 +9,7 @@ namespace FMSC.Core
 
         private const double FeetToMeters_Coeff = 1200d / 3937d;
         private const double YardsToMeters_Coeff = FeetToMeters_Coeff * 3d;
-        private const double ChainsToMeters_Coeff = FeetToMeters_Coeff * 22d;
+        private const double ChainsToMeters_Coeff = FeetToMeters_Coeff * 66d;
 
         private const double MetersToFeet_Coeff = 3937d / 1200d;
         private const double YardsToFeet_Coeff = 3d;
