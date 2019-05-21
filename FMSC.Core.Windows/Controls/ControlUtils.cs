@@ -6,6 +6,7 @@ namespace FMSC.Core.Windows.Controls
 {
     public static class ControlUtils
     {
+        public const string RestrictedChars = "!@#$%^&*:;\'\"<>/?{}\\`~";
 
         public static bool TextIsInteger(object sender, TextCompositionEventArgs e)
         {
@@ -32,6 +33,11 @@ namespace FMSC.Core.Windows.Controls
             return string.IsNullOrEmpty(e.Text) ? false : !(e.Text.All(x => char.IsDigit(x) ||
                 (e.Text == "." && sender is TextBox tb && !tb.Text.Contains("."))
             ));
+        }
+
+        public static bool TextHasRestrictedCharacters(object sender, TextCompositionEventArgs e, string restrictedChars = RestrictedChars)
+        {
+            return e.Text.Any(x => restrictedChars.Contains(x));
         }
     }
 }
