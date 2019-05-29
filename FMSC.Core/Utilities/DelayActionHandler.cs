@@ -6,21 +6,21 @@ namespace FMSC.Core.Utilities
     public class DelayActionHandler
     {
         private Timer _Timer;
-        private long _Delay = 1000;
+        public long Delay { get; private set; } = 1000;
         private Action _Action;
 
 
         public DelayActionHandler()
         {
-            _Timer = new Timer(_Delay);
+            _Timer = new Timer(Delay);
             _Timer.AutoReset = false;
             _Timer.Elapsed += Timer_Elapsed;
         }
 
         public DelayActionHandler(long delay) : this()
         {
-            _Delay = delay;
-            _Timer.Interval = _Delay;
+            Delay = delay;
+            _Timer.Interval = Delay;
         }
 
         public DelayActionHandler(Action action, long delay) : this(delay)
@@ -37,12 +37,17 @@ namespace FMSC.Core.Utilities
 
         public void DelayInvoke()
         {
-            DelayInvoke(_Action, _Delay);
+            DelayInvoke(_Action, Delay);
         }
 
         public void DelayInvoke(Action action)
         {
-            DelayInvoke(action, _Delay);
+            DelayInvoke(action, Delay);
+        }
+
+        public void DelayInvoke(long delay)
+        {
+            DelayInvoke(_Action, delay);
         }
 
         public void DelayInvoke(Action action, long delay)
@@ -50,11 +55,7 @@ namespace FMSC.Core.Utilities
             _Timer.Stop();
             _Action = action;
 
-            if (_Delay != delay)
-            {
-                _Delay = delay;
-                _Timer.Interval = _Delay;
-            }
+            _Timer.Interval = delay;
 
             _Timer.Start();
         }
