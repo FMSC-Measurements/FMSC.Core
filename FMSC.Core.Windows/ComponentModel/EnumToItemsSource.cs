@@ -33,7 +33,7 @@ namespace FMSC.Core.Windows.ComponentModel
     {
         public static string GetDescription(Enum @enum)
         {
-            object[] attrs = @enum.GetType().GetField(@enum.ToString()).GetCustomAttributes(false);
+            object[] attrs = @enum.GetType().GetField(@enum.ToString()).GetCustomAttributes(typeof(DescriptionAttribute), false);
 
             return (attrs != null && attrs.Length > 0 && attrs[0] is DescriptionAttribute descAttr) ? 
                 descAttr.Description ?? @enum.ToString() : @enum.ToString();
