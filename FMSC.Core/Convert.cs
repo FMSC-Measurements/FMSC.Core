@@ -5,8 +5,6 @@ namespace FMSC.Core
     public static class Convert
     {
         #region Coeff
-        private const double HA_Coeff = 2.471;
-
         private const double FeetToMeters_Coeff = 1200d / 3937d;
         private const double YardsToMeters_Coeff = FeetToMeters_Coeff * 3d;
         private const double ChainsToMeters_Coeff = FeetToMeters_Coeff * 66d;
@@ -24,6 +22,24 @@ namespace FMSC.Core
         private const double YardsToChains_Coeff = 3d / 66d;
 
 
+        private const double SquareFeetToSquareMeter_Coeff = 1d / 10.764;
+        private const double SquareFeetToAcre_Coeff = 1d / 43560;
+        private const double SquareFeetToHectare_Coeff = 1d / 107639.104;
+
+        private const double SquareMeterToSquareFeet_Coeff = 10.7639;
+        private const double SquareMeterToAcre_Coeff = 1d / 4046.856;
+        private const double SquareMeterToHectare_Coeff = 1d / 10000;
+        
+        private const double AcreToSquareFeet_Coeff = 43560;
+        private const double AcreToSquareMeter_Coeff = 4046.86;
+        private const double AcreToHectare_Coeff = 1d / 2.471;
+
+        private const double HectareToSquareFeet_Coeff = 107639.104;
+        private const double HectareToSquareMeter_Coeff = 10000;
+        private const double HectareToAcre_Coeff = 2.471;
+
+
+
         //private const double CubicInchToBoardFoot_Coeff = 1d / 144d;
         private const double CubicFootToBoardFoot_Coeff = 12d;
         private static readonly double CubicMeterToBoardFoot_Coeff = Math.Pow(MetersToFeet_Coeff, 3) * 12d;
@@ -39,11 +55,8 @@ namespace FMSC.Core
         private static readonly double BoardFootToCubicMeter_Coeff = 1d / CubicMeterToBoardFoot_Coeff;
         //private static readonly double CubicInchToCubicMeter_Coeff = 1d / CubicMeterToCubicInch_Coeff;
         private static readonly double CubicFootToCubicMeter_Coeff = 1d / CubicMeterToCubicFoot_Coeff;
+        
 
-
-
-        private const double Meters2ToAcres_Coeff = 0.00024711;
-        private const double Meters2ToHectares_Coeff = 0.0001;
 
         private const double Degrees2Radians_Coeff = Math.PI / 180.0;
         private const double Radians2Degrees_Coeff = 180.0 / Math.PI;
@@ -245,20 +258,72 @@ namespace FMSC.Core
         }
 
 
-        public static double HectaAcresToAcres(double hectaAcres)
+        public static double Area(double area, Area to, Area from)
         {
-            return hectaAcres * HA_Coeff;
-        }
-        
+            if (to == from)
+                return area;
 
-        public static double MetersSquaredToHa(double m2)
-        {
-            return m2 * Meters2ToHectares_Coeff;
+            switch (to)
+            {
+                case Core.Area.FeetSq: return ToSquareFeet(area, from);
+                case Core.Area.MeterSq: return ToSquareMeter(area, from);
+                case Core.Area.Acre: return ToAcre(area, from);
+                case Core.Area.HectaAcre: return ToHectare(area, from);
+            }
+
+            throw new Exception("Invalid Option");
         }
 
-        public static double MetersSquaredToAcres(double m2)
+        public static double ToSquareFeet(double area, Area from)
         {
-            return m2 * Meters2ToAcres_Coeff;
+            switch (from)
+            {
+                case Core.Area.FeetSq: return area;
+                case Core.Area.MeterSq: return SquareMeterToSquareFeet_Coeff * area;
+                case Core.Area.Acre: return AcreToSquareFeet_Coeff * area;
+                case Core.Area.HectaAcre: return HectareToSquareFeet_Coeff * area;
+            }
+
+            throw new Exception("Invalid Option");
+        }
+
+        public static double ToSquareMeter(double area, Area from)
+        {
+            switch (from)
+            {
+                case Core.Area.FeetSq: return SquareFeetToSquareMeter_Coeff * area;
+                case Core.Area.MeterSq: return area;
+                case Core.Area.Acre: return AcreToSquareMeter_Coeff * area;
+                case Core.Area.HectaAcre: return HectareToSquareMeter_Coeff * area;
+            }
+
+            throw new Exception("Invalid Option");
+        }
+
+        public static double ToAcre(double area, Area from)
+        {
+            switch (from)
+            {
+                case Core.Area.FeetSq: return SquareFeetToAcre_Coeff * area;
+                case Core.Area.MeterSq: return SquareMeterToAcre_Coeff * area;
+                case Core.Area.Acre: return area;
+                case Core.Area.HectaAcre: return HectareToAcre_Coeff * area;
+            }
+
+            throw new Exception("Invalid Option");
+        }
+
+        public static double ToHectare(double area, Area from)
+        {
+            switch (from)
+            {
+                case Core.Area.FeetSq: return SquareFeetToHectare_Coeff * area;
+                case Core.Area.MeterSq: return SquareMeterToHectare_Coeff * area;
+                case Core.Area.Acre: return AcreToHectare_Coeff * area;
+                case Core.Area.HectaAcre: return area;
+            }
+
+            throw new Exception("Invalid Option");
         }
 
         public static double? Angle(double? angle, Slope to, Slope from)
