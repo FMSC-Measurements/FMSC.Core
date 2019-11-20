@@ -58,8 +58,10 @@ namespace FMSC.Core
         
 
 
-        private const double Degrees2Radians_Coeff = Math.PI / 180.0;
-        private const double Radians2Degrees_Coeff = 180.0 / Math.PI;
+        private const double DegreesToRadians_Coeff = Math.PI / 180.0;
+        private const double RadiansToDegrees_Coeff = 180.0 / Math.PI;
+        private const double PercentToRadians_Coeff = 1 / 15.91549430919;
+        private const double RadiansToPercent_Coeff = 15.91549430919;
         #endregion
 
         public static double Distance(double distance, Distance to, Distance from)
@@ -85,11 +87,11 @@ namespace FMSC.Core
         public static double DistanceLatLngInMeters(double lat1, double lon1, double lat2, double lon2)
         {
             double r = 6371d; // Radius of the earth in km
-            double dLat = Degrees2Radians_Coeff * (lat2 - lat1);
-            double dLon = Degrees2Radians_Coeff * (lon2 - lon1);
+            double dLat = DegreesToRadians_Coeff * (lat2 - lat1);
+            double dLon = DegreesToRadians_Coeff * (lon2 - lon1);
             double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
-                    Math.Cos(Degrees2Radians_Coeff * (lat1)) *
-                            Math.Cos(Degrees2Radians_Coeff * (lat2)) *
+                    Math.Cos(DegreesToRadians_Coeff * (lat1)) *
+                            Math.Cos(DegreesToRadians_Coeff * (lat2)) *
                             Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
 
 
@@ -249,12 +251,22 @@ namespace FMSC.Core
 
         public static double DegreesToRadians(double degrees)
         {
-            return degrees * Degrees2Radians_Coeff;
+            return degrees * DegreesToRadians_Coeff;
         }
 
         public static double RadiansToDegrees(double radians)
         {
-            return radians * Radians2Degrees_Coeff;
+            return radians * RadiansToDegrees_Coeff;
+        }
+
+        public static double PercentToRadians(double percent)
+        {
+            return percent * PercentToRadians_Coeff;
+        }
+
+        public static double RadiansToPercent(double radians)
+        {
+            return radians * RadiansToPercent_Coeff;
         }
 
 
