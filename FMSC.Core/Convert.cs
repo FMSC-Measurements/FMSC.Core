@@ -261,12 +261,7 @@ namespace FMSC.Core
 
         public static double PercentToRadians(double percent)
         {
-            return percent * PercentToRadians_Coeff;
-        }
-
-        public static double RadiansToPercent(double radians)
-        {
-            return radians * RadiansToPercent_Coeff;
+            return Math.Atan(percent / 100d);
         }
 
 
