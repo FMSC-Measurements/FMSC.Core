@@ -10,7 +10,7 @@ using System.Text;
 
 namespace FMSC.Core.Collections
 {
-    public class ObservableFilteredCollection<T> : IReadOnlyList<T>, IReadOnlyCollection<T>, INotifyCollectionChanged, INotifyPropertyChanged, IDisposable
+    public class ObservableFilteredSortableCollection<T, TKey> : IReadOnlyList<T>, IReadOnlyCollection<T>, INotifyCollectionChanged, INotifyPropertyChanged, IDisposable
     {
         public event NotifyCollectionChangedEventHandler CollectionChanged;
         public event PropertyChangedEventHandler PropertyChanged;
@@ -34,7 +34,7 @@ namespace FMSC.Core.Collections
         public int Count { get { return _Collection.Count; } }
 
 
-        public ObservableFilteredCollection(ReadOnlyObservableCollection<T> source, Func<T, bool> filter)
+        public ObservableFilteredSortableCollection(ReadOnlyObservableCollection<T> source, Func<T, bool> filter, Func<T, TKey> keySelector)
         {
             ItemCanChange = typeof(T).ImplementsInterface<INotifyPropertyChanged>();
 
@@ -43,7 +43,7 @@ namespace FMSC.Core.Collections
 
             lock (this)
             {
-                _Collection = new ObservableCollection<T>(_Source.Where(item => _Filter(item)));
+                _Collection = new ObservableCollection<T>(_Source.Where(item => _Filter(item)).OrderBy(keySelector));
 
                 foreach (T item in _Source)
                 {
@@ -57,7 +57,7 @@ namespace FMSC.Core.Collections
         }
 
 
-        ~ObservableFilteredCollection()
+        ~ObservableFilteredSortableCollection()
         {
             Dispose(false);
         }
@@ -75,24 +75,21 @@ namespace FMSC.Core.Collections
             {
                 lock (_Source)
                 {
-                    _Collection = new ObservableCollection<T>(_Source.Where(item => _Filter(item)));
-
                     foreach (T item in _Source)
                     {
-                        ((INotifyPropertyChanged)item).PropertyChanged += Item_PropertyChanged;
+                        ((INotifyPropertyChanged)item).PropertyChanged -= Item_PropertyChanged;
                     }
                 }
 
-                ((INotifyCollectionChanged)_Source).CollectionChanged += Source_CollectionChanged;
-                ((INotifyCollectionChanged)_Collection).CollectionChanged += HandleCollectionChanged;
-                ((INotifyPropertyChanged)_Collection).PropertyChanged += HandlePropertyChanged;
+                ((INotifyCollectionChanged)_Source).CollectionChanged -= Source_CollectionChanged;
+                ((INotifyCollectionChanged)_Collection).CollectionChanged -= HandleCollectionChanged;
+                ((INotifyPropertyChanged)_Collection).PropertyChanged -= HandlePropertyChanged;
 
                 _Collection.Clear();
             }
 
             _disposed = true;
         }
-
 
 
         public T this[int index]

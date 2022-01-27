@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 
 namespace FMSC.Core.Windows.ComponentModel.Commands
 {
-    public class BindedRelayCommand<TViewModel> : RelayCommand where TViewModel : INotifyPropertyChanged
+    public class BindedRelayCommand<TViewModel> : RelayCommand, IDisposable where TViewModel : class, INotifyPropertyChanged
     {
+        private TViewModel _Model;
         private List<string> _WatchedProperties;
 
         /// <summary>
@@ -23,7 +26,28 @@ namespace FMSC.Core.Windows.ComponentModel.Commands
            : base(execute, canExecute)
         {
             RegisterPropertiesWatcher(propertiesToWatch);
-            model.PropertyChanged += PropertyChangedHandler;
+            (_Model = model).PropertyChanged += PropertyChangedHandler;
+        }
+
+        ~BindedRelayCommand()
+        {
+            Dispose(false);
+        }
+
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_Model != null)
+                _Model.PropertyChanged -= PropertyChangedHandler;
+            _Model = null;
+            _CanExecute = null;
+            _Execute = null;
         }
 
 

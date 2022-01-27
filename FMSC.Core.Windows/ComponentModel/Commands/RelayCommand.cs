@@ -13,8 +13,8 @@ namespace FMSC.Core.Windows.ComponentModel.Commands
         public event EventHandler CanExecuteChanged;
 
 
-        private Predicate<object> _CanExecute;
-        private Action<object> _Execute;
+        protected Predicate<object> _CanExecute;
+        protected Action<object> _Execute;
 
 
         public RelayCommand(Action<object> execute, Predicate<object> canExecute = null)

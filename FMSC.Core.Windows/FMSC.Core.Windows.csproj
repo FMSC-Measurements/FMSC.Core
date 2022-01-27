@@ -55,6 +55,6 @@
     </None>
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy /Y &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;$(SolutionDir)..\libs\$(ProjectName).dll&quot;" />
+    <Exec Command="copy /Y &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;$(SolutionDir)..\libs\$(ProjectName).dll&quot;&#xD;&#xA;if $(ConfigurationName) == Debug (&#xD;&#xA;  copy /Y &quot;$(TargetDir)$(ProjectName).pdb&quot; &quot;$(SolutionDir)..\libs\$(ProjectName).pdb&quot;&#xD;&#xA;)" />
   </Target>
 </Project>

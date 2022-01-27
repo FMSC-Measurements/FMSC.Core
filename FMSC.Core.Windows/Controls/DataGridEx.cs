@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 
 namespace FMSC.Core.Windows.Controls
@@ -55,25 +57,20 @@ namespace FMSC.Core.Windows.Controls
         private static void BindableColumnsPropertyChanged(DependencyObject source, DependencyPropertyChangedEventArgs e)
         {
             DataGrid dataGrid = source as DataGrid;
-            ObservableCollection<DataGridColumn> columns = e.NewValue as ObservableCollection<DataGridColumn>;
+            ObservableCollection<DataGridColumn> newColumns = e.NewValue as ObservableCollection<DataGridColumn>;
 
-            dataGrid.Columns.Clear();
-
-            if (columns == null)
-                return;
-
-            foreach (DataGridColumn column in columns)
-                dataGrid.Columns.Add(column);
-
-            columns.CollectionChanged += (sender, e2) =>
+            NotifyCollectionChangedEventHandler ncceh;
+            Action<object, NotifyCollectionChangedEventArgs> onCollectionChanged = (sender, ne) =>
             {
-                NotifyCollectionChangedEventArgs ne = e2 as NotifyCollectionChangedEventArgs;
                 if (ne.Action == NotifyCollectionChangedAction.Reset)
                 {
                     dataGrid.Columns.Clear();
-                    foreach (DataGridColumn column in ne.NewItems)
+                    if (ne.NewItems != null)
                     {
-                        dataGrid.Columns.Add(column);
+                        foreach (DataGridColumn column in ne.NewItems)
+                        {
+                            dataGrid.Columns.Add(column);
+                        }
                     }
                 }
                 else if (ne.Action == NotifyCollectionChangedAction.Add)
@@ -99,30 +96,60 @@ namespace FMSC.Core.Windows.Controls
                     dataGrid.Columns[ne.NewStartingIndex] = ne.NewItems[0] as DataGridColumn;
                 }
             };
-        }
-        
+
+            ncceh = new NotifyCollectionChangedEventHandler(onCollectionChanged);
 
 
-
-        public DataGridEx()
-        {
-            this.SelectionChanged += DataGridEx_SelectionChanged;
-            this.SourceUpdated += DataGridEx_SourceUpdated;
-            this.ItemContainerGenerator.ItemsChanged += ItemContainerGenerator_ItemsChanged;
-
-            var dpd = DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, typeof(DataGrid));
-            if (dpd != null)
+            if (e.OldValue != null)
             {
-                dpd.AddValueChanged(this, OnSourceChanged);
+                ObservableCollection<DataGridColumn> oldColumns = e.OldValue as ObservableCollection<DataGridColumn>;
+                oldColumns.CollectionChanged -= ncceh;
             }
+
+            dataGrid.Columns.Clear();
+
+            if (newColumns == null)
+                return;
+
+            foreach (DataGridColumn column in newColumns)
+                dataGrid.Columns.Add(column);
+
+            newColumns.CollectionChanged += ncceh;
+
+            RoutedEventHandler reh = null;
+
+            Action<object, RoutedEventArgs> dgUnload = (s, re) =>
+            {
+                newColumns.CollectionChanged -= ncceh;
+                dataGrid.Unloaded -= reh;
+            };
+
+            reh = new RoutedEventHandler(dgUnload);
+
+            dataGrid.Unloaded += reh;
         }
 
-        private void OnSourceChanged(object sender, EventArgs e)
-        {
-            CollectionView cv = this.ItemsSource as CollectionView;
+        private CollectionView _CurrentSource;
 
-            if (cv != null)
-                ((INotifyCollectionChanged)cv).CollectionChanged += DataGridEx_CollectionChanged;
+        protected override void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue)
+        {
+            if (_CurrentSource != null)
+            {
+                ((INotifyCollectionChanged)_CurrentSource).CollectionChanged -= DataGridEx_CollectionChanged;
+                _CurrentSource = null;
+            }
+
+            if (newValue is CollectionView cv && cv != null)
+            {
+                _CurrentSource = cv;
+
+                ((INotifyCollectionChanged)_CurrentSource).CollectionChanged += DataGridEx_CollectionChanged;
+
+                this.VisibleItemsList = this.ItemContainerGenerator.Items;
+                VisibleItemListChanged?.Invoke(VisibleItemsList);
+            }
+
+            base.OnItemsSourceChanged(oldValue, newValue);
         }
 
         private void DataGridEx_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -130,27 +157,12 @@ namespace FMSC.Core.Windows.Controls
             CollectionUpdated?.Invoke(sender, e);
         }
 
-        private void ItemContainerGenerator_ItemsChanged(object sender, System.Windows.Controls.Primitives.ItemsChangedEventArgs e)
+        protected override void OnSelectionChanged(SelectionChangedEventArgs e)
         {
-            if (e == null)
-                throw new ArgumentNullException(nameof(e));
-
-            this.VisibleItemsList = this.ItemContainerGenerator.Items;
-            VisibleItemListChanged?.Invoke(VisibleItemsList);
-        }
-
-        private void DataGridEx_SourceUpdated(object sender, DataTransferEventArgs e)
-        {
-            this.VisibleItemsList = this.ItemContainerGenerator.Items;
-            VisibleItemListChanged?.Invoke(VisibleItemsList);
-        }
-
-        void DataGridEx_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+            base.OnSelectionChanged(e);
             this.SelectedItemsList = this.SelectedItems;
             SelectedItemListChanged?.Invoke(SelectedItemsList);
         }
-
 
         protected override void OnSorting(DataGridSortingEventArgs e)
         {
