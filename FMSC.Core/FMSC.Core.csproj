@@ -21,9 +21,6 @@
   </Target>
 
   <ItemGroup>
-    <Reference Include="CSUtilSlim">
-      <HintPath>..\..\libs\CSUtilSlim.dll</HintPath>
-    </Reference>
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.115.5" />
   </ItemGroup>
-
 </Project>

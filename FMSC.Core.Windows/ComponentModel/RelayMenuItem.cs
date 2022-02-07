@@ -1,10 +1,10 @@
-﻿using CSUtil.ComponentModel;
+﻿using FMSC.Core.ComponentModel;
 using FMSC.Core.Windows.ComponentModel.Commands;
 using System;
 
 namespace FMSC.Core.Windows.ComponentModel
 {
-    public class RelayMenuItem : NotifyPropertyChangedEx
+    public class RelayMenuItem : BaseModel
     {
         public String Header
         {

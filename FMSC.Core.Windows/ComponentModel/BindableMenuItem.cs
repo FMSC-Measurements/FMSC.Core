@@ -1,10 +1,10 @@
-﻿using CSUtil.ComponentModel;
+﻿using FMSC.Core.ComponentModel;
 using System;
 using System.Windows.Input;
 
 namespace FMSC.Core.Windows.ComponentModel
 {
-    public class BindableMenuItem : NotifyPropertyChangedEx
+    public class BindableMenuItem : BaseModel
     {
         public String Header
         {

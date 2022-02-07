@@ -1,9 +1,9 @@
-﻿using CSUtil.ComponentModel;
+﻿using FMSC.Core.ComponentModel;
 using System;
 
 namespace FMSC.Core.Windows.ComponentModel
 {
-    public class CheckedListItem<T> : NotifyPropertyChangedEx
+    public class CheckedListItem<T> : BaseModel
     {
         public event EventHandler ItemCheckedChanged;
 
