@@ -86,7 +86,54 @@ namespace FMSC.Core.Collections
             {
                 NotifyCollectionChangedEventArgs cvte = null;
 
-                OnPreviewCollectionChanged(e);
+                switch (e.Action)
+                {
+                    case NotifyCollectionChangedAction.Add:
+                        {
+                            cvte = new NotifyCollectionChangedEventArgs(
+                                NotifyCollectionChangedAction.Add,
+                                e.NewItems.Cast<TIn>().Select(i => _ConvertedLookup[i]).First(),
+                                e.NewStartingIndex
+                            );
+                            break;
+                        }
+                    case NotifyCollectionChangedAction.Move:
+                        {
+                            cvte = new NotifyCollectionChangedEventArgs(
+                                NotifyCollectionChangedAction.Move,
+                                e.OldItems.Cast<TIn>().Select(i => _ConvertedLookup[i]).First(),
+                                e.NewStartingIndex,
+                                e.OldStartingIndex
+                            );
+                            break;
+                        }
+                    case NotifyCollectionChangedAction.Remove:
+                        {
+                            cvte = new NotifyCollectionChangedEventArgs(
+                                NotifyCollectionChangedAction.Remove,
+                                e.OldItems.Cast<TIn>().Select(i => _ConvertedLookup[i]).First(),
+                                e.OldStartingIndex
+                            );
+                            break;
+                        }
+                    case NotifyCollectionChangedAction.Replace:
+                        {
+                            cvte = new NotifyCollectionChangedEventArgs(
+                                NotifyCollectionChangedAction.Replace,
+                                e.OldItems.Cast<TIn>().Select(i => _ConvertedLookup[i]).First(),
+                                e.NewItems.Cast<TIn>().Select(i => _ConvertedLookup[i]).First(),
+                                e.NewStartingIndex
+                            );
+                            break;
+                        }
+                    case NotifyCollectionChangedAction.Reset:
+                        {
+                            cvte = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset);
+                            break;
+                        }
+                }
+
+                OnPreviewCollectionChanged(cvte);
 
                 switch (e.Action)
                 {
@@ -123,7 +170,7 @@ namespace FMSC.Core.Collections
                                 }
                             }
 
-                            cvte = new NotifyCollectionChangedEventArgs(e.Action, newItems);
+                            cvte = new NotifyCollectionChangedEventArgs(e.Action, newItems, e.NewStartingIndex);
                             break;
                         }
                     case NotifyCollectionChangedAction.Remove:
@@ -141,7 +188,7 @@ namespace FMSC.Core.Collections
                                 }
                             }
 
-                            cvte = new NotifyCollectionChangedEventArgs(e.Action, oldItems);
+                            cvte = new NotifyCollectionChangedEventArgs(e.Action, oldItems, e.OldStartingIndex);
                             break;
                         }
                     case NotifyCollectionChangedAction.Replace:
