@@ -79,20 +79,27 @@ namespace FMSC.Core.Collections
             _disposed = true;
         }
 
-
         private void Source_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             lock (this)
             {
                 NotifyCollectionChangedEventArgs cvte = null;
+                Dictionary<TIn, TOut> newOutItems = null;
 
                 switch (e.Action)
                 {
                     case NotifyCollectionChangedAction.Add:
                         {
+                            Func<TIn, TOut> createNewItem = (tin) =>
+                            {
+                                TOut o = _Converter(tin);
+                                (newOutItems ?? (newOutItems = new Dictionary<TIn, TOut>()))[tin] = o;
+                                return o;
+                            };
+
                             cvte = new NotifyCollectionChangedEventArgs(
                                 NotifyCollectionChangedAction.Add,
-                                e.NewItems.Cast<TIn>().Select(i => _ConvertedLookup[i]).First(),
+                                e.NewItems.Cast<TIn>().Select(i => createNewItem(i)).First(),
                                 e.NewStartingIndex
                             );
                             break;
@@ -147,7 +154,8 @@ namespace FMSC.Core.Collections
 
                                 foreach (TIn i in e.NewItems)
                                 {
-                                    TOut o = _Converter(i);
+                                    //TOut o = _Converter(i);
+                                    TOut o = newOutItems[i];
                                     _ConvertedLookup.Add(i, o);
                                     _EditableCollection.Insert(index, o);
                                     newItems.Add(o);
@@ -157,7 +165,8 @@ namespace FMSC.Core.Collections
                             else
                             {
                                 TIn i = (TIn)e.NewItems[0];
-                                TOut o = _Converter(i);
+                                //TOut o = _Converter(i);
+                                TOut o = newOutItems[i];
                                 if (!_ConvertedLookup.ContainsKey(i))
                                 {
                                     _ConvertedLookup.Add(i, o);
