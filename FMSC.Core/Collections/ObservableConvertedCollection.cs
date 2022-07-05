@@ -154,7 +154,6 @@ namespace FMSC.Core.Collections
 
                                 foreach (TIn i in e.NewItems)
                                 {
-                                    //TOut o = _Converter(i);
                                     TOut o = newOutItems[i];
                                     _ConvertedLookup.Add(i, o);
                                     _EditableCollection.Insert(index, o);
@@ -165,7 +164,6 @@ namespace FMSC.Core.Collections
                             else
                             {
                                 TIn i = (TIn)e.NewItems[0];
-                                //TOut o = _Converter(i);
                                 TOut o = newOutItems[i];
                                 if (!_ConvertedLookup.ContainsKey(i))
                                 {
@@ -191,7 +189,9 @@ namespace FMSC.Core.Collections
                                 if (_ConvertedLookup.ContainsKey(ti))
                                 {
                                     TOut o = _ConvertedLookup[ti];
-                                    _EditableCollection.Remove(o);
+
+                                    if (_EditableCollection.Contains(o))
+                                        _EditableCollection.Remove(o);
                                     _ConvertedLookup.Remove(ti);
                                     oldItems.Add(o);
                                 }
@@ -235,6 +235,7 @@ namespace FMSC.Core.Collections
                     case NotifyCollectionChangedAction.Reset:
                         {
                             _EditableCollection.Clear();
+                            _ConvertedLookup.Clear();
                             cvte = new NotifyCollectionChangedEventArgs(e.Action);
                             break;
                         }

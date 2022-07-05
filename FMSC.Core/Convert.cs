@@ -5,38 +5,38 @@ namespace FMSC.Core
     public static class Convert
     {
         #region Coeff
-        private const double FeetToMeters_Coeff = 1200d / 3937d;
-        private const double YardsToMeters_Coeff = FeetToMeters_Coeff * 3d;
-        private const double ChainsToMeters_Coeff = FeetToMeters_Coeff * 66d;
+        public const double FeetToMeters_Coeff = 1200d / 3937d;
+        public const double YardsToMeters_Coeff = FeetToMeters_Coeff * 3d;
+        public const double ChainsToMeters_Coeff = FeetToMeters_Coeff * 66d;
 
-        private const double MetersToFeet_Coeff = 3937d / 1200d;
-        private const double YardsToFeet_Coeff = 3d;
-        private const double ChainsToFeet_Coeff = 66d;
+        public const double MetersToFeet_Coeff = 3937d / 1200d;
+        public const double YardsToFeet_Coeff = 3d;
+        public const double ChainsToFeet_Coeff = 66d;
 
-        private const double FeetToYards_Coeff = 1d / 3d;
-        private const double MetersToYards_Coeff = 1d / YardsToMeters_Coeff;
-        private const double ChainsToYards_Coeff = 22d;
+        public const double FeetToYards_Coeff = 1d / 3d;
+        public const double MetersToYards_Coeff = 1d / YardsToMeters_Coeff;
+        public const double ChainsToYards_Coeff = 22d;
 
-        private const double FeetToChains_Coeff = 1d / 66d;
-        private const double MetersToChains_Coeff = MetersToFeet_Coeff / 66d;
-        private const double YardsToChains_Coeff = 3d / 66d;
+        public const double FeetToChains_Coeff = 1d / 66d;
+        public const double MetersToChains_Coeff = MetersToFeet_Coeff / 66d;
+        public const double YardsToChains_Coeff = 3d / 66d;
 
 
-        private const double SquareFeetToSquareMeter_Coeff = 1d / 10.764;
-        private const double SquareFeetToAcre_Coeff = 1d / 43560;
-        private const double SquareFeetToHectare_Coeff = 1d / 107639.104;
+        public const double SquareFeetToSquareMeter_Coeff = 1d / 10.764;
+        public const double SquareFeetToAcre_Coeff = 1d / 43560;
+        public const double SquareFeetToHectare_Coeff = 1d / 107639.104;
 
-        private const double SquareMeterToSquareFeet_Coeff = 10.7639;
-        private const double SquareMeterToAcre_Coeff = 1d / 4046.856;
-        private const double SquareMeterToHectare_Coeff = 1d / 10000;
-        
-        private const double AcreToSquareFeet_Coeff = 43560;
-        private const double AcreToSquareMeter_Coeff = 4046.86;
-        private const double AcreToHectare_Coeff = 1d / 2.471;
+        public const double SquareMeterToSquareFeet_Coeff = 10.7639;
+        public const double SquareMeterToAcre_Coeff = 1d / 4046.856;
+        public const double SquareMeterToHectare_Coeff = 1d / 10000;
 
-        private const double HectareToSquareFeet_Coeff = 107639.104;
-        private const double HectareToSquareMeter_Coeff = 10000;
-        private const double HectareToAcre_Coeff = 2.471;
+        public const double AcreToSquareFeet_Coeff = 43560;
+        public const double AcreToSquareMeter_Coeff = 4046.86;
+        public const double AcreToHectare_Coeff = 1d / 2.471;
+
+        public const double HectareToSquareFeet_Coeff = 107639.104;
+        public const double HectareToSquareMeter_Coeff = 10000;
+        public const double HectareToAcre_Coeff = 2.471;
 
 
 
