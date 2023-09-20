@@ -79,5 +79,33 @@ namespace FMSC.Core
             }
             return Math.Abs(dist);
         }
+
+        public static double CalculateAngleBetweenPoints(double aX, double aY, double bX, double bY, double cX, double cY)
+        {
+            //double A_x = aX - bX;
+            //double A_y = aY - bY;
+
+            //double B_x = cX - bX;
+            //double B_y = cY - bY;
+
+            //double dotProduct = DotProduct(aX, aY, bX, bY, cX, cY);
+
+            //double MagnitudeA = Math.Sqrt((A_x * A_x) + (A_y * A_y));
+            //double MagnitudeB = Math.Sqrt((B_x * B_x) + (B_y * B_y));
+
+            //double cosineAngle = dotProduct / (MagnitudeA * MagnitudeB);
+
+            //double angleInRadians = Math.Acos(cosineAngle);
+
+            // Convert to degrees
+            //return Convert.RadiansToDegrees(angleInRadians);
+
+            return Convert.RadiansToDegrees(
+                Math.Acos(
+                    DotProduct(aX, aY, bX, bY, cX, cY) / 
+                        (Math.Sqrt(Math.Pow(aX - bX, 2) + Math.Pow(aY - bY, 2)) *
+                            Math.Sqrt(Math.Pow(cX - bX, 2) + Math.Pow(cY - bY, 2)))
+            ));
+        }
     }
 }
