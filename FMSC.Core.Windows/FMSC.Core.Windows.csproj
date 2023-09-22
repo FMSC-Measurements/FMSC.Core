@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <AssemblyTitle>FMSC.Core.Windows</AssemblyTitle>
     <Company>Fortest Management Service Center</Company>
     <Product>FMSC.Core.Windows</Product>
