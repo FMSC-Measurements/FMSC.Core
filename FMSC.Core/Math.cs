@@ -107,5 +107,10 @@ namespace FMSC.Core
                             Math.Sqrt(Math.Pow(cX - bX, 2) + Math.Pow(cY - bY, 2)))
             ));
         }
+
+        public static double CalculateNextPointDir(double aX, double aY, double bX, double bY, double npX, double npY)
+        {
+            return (npX - aX) * (bY - aY) - (npY - aY) * (bX - aX);
+        }
     }
 }
