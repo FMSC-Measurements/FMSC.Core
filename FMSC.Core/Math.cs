@@ -57,49 +57,48 @@ namespace FMSC.Core
 
         //Compute the distance from AB to C
         //if isSegment is true, AB is a segment, not a line.
-        public static double LineToPointDistance2D(Point pointA, Point pointB, Point pointC, bool isSegment = true)
+        public static double DistanceToLine(Point pointA, Point pointB, Point pointC, bool isSegment = true)
         {
-            return LineToPointDistance2D(pointA.X, pointA.Y, pointB.X, pointB.Y, pointC.X, pointC.Y, isSegment);
+            return DistanceToLine(pointA.X, pointA.Y, pointB.X, pointB.Y, pointC.X, pointC.Y, isSegment);
         }
 
-        //Compute the distance from AB to C
-        //if isSegment is true, AB is a segment, not a line.
-        public static double LineToPointDistance2D(double aX, double aY, double bX, double bY, double cX, double cY, bool isSegment = true)
+        public static double DistanceToLine(double x, double y, double l1x, double l1y, double l2x, double l2y, bool isSegment = true)
         {
-            double dist = CrossProduct(aX, aY, bX, bY, cX, cY) / Distance(aX, aY, bX, bY);
-            if (isSegment)
+            double segmentLengthSquared = (l2x - l1x) * (l2x - l1x) + (l2y - l1y) * (l2y - l1y);
+
+            if (segmentLengthSquared == 0.0)
             {
-                double dot1 = DotProduct(aX, aY, bX, bY, cX, cY);
-                if (dot1 > 0)
-                    return Distance(bX, bY, cX, cY);
-
-                double dot2 = DotProduct(aX, aY, bX, bY, cX, cY);
-                if (dot2 > 0)
-                    return Distance(aX, aY, cX, cY);
+                // The line segment is just a point.
+                return Distance(x, y, l1x, l1y);
             }
-            return Math.Abs(dist);
+
+            double t = ((x - l1x) * (l2x - l1x) + (y - l1y) * (l2y - l1y)) / segmentLengthSquared;
+
+            if (t < 0)
+            {
+                // The closest point is the starting endpoint of the line segment.
+                return Distance(x, y, l1x, l1y);
+            }
+            else if (t > 1)
+            {
+                // The closest point is the ending endpoint of the line segment.
+                return Distance(x, y, l2x, l2y);
+            }
+            else
+            {
+                // The closest point is on the line segment.
+                double closestX = l1x + t * (l2x - l1x);
+                double closestY = l1y + t * (l2y - l1y);
+
+                return isSegment ?
+                    Math.Sqrt(Math.Pow(x - closestX, 2) + Math.Pow(y - closestY, 2)) :
+                    Math.Sqrt(Math.Pow(closestX, 2) + Math.Pow(closestY, 2));
+            }
         }
+
 
         public static double CalculateAngleBetweenPoints(double aX, double aY, double bX, double bY, double cX, double cY)
         {
-            //double A_x = aX - bX;
-            //double A_y = aY - bY;
-
-            //double B_x = cX - bX;
-            //double B_y = cY - bY;
-
-            //double dotProduct = DotProduct(aX, aY, bX, bY, cX, cY);
-
-            //double MagnitudeA = Math.Sqrt((A_x * A_x) + (A_y * A_y));
-            //double MagnitudeB = Math.Sqrt((B_x * B_x) + (B_y * B_y));
-
-            //double cosineAngle = dotProduct / (MagnitudeA * MagnitudeB);
-
-            //double angleInRadians = Math.Acos(cosineAngle);
-
-            // Convert to degrees
-            //return Convert.RadiansToDegrees(angleInRadians);
-
             return Convert.RadiansToDegrees(
                 Math.Acos(
                     DotProduct(aX, aY, bX, bY, cX, cY) / 
@@ -108,9 +107,9 @@ namespace FMSC.Core
             ));
         }
 
-        public static double CalculateNextPointDir(double aX, double aY, double bX, double bY, double npX, double npY)
+        public static double CalculateNextPointDir(double aX, double aY, double bX, double bY, double nX, double nY)
         {
-            return (npX - aX) * (bY - aY) - (npY - aY) * (bX - aX);
+            return (nX - aX) * (bY - aY) - (nY - aY) * (bX - aX);
         }
     }
 }
