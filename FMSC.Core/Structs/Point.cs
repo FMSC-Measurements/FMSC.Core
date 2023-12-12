@@ -66,6 +66,8 @@ namespace FMSC.Core
             return other.X == this.X && other.Y == this.Y;
         }
 
+
+
         public void Offset(double dx, double dy)
         {
             X += dx;
@@ -75,6 +77,14 @@ namespace FMSC.Core
         public void Offset(Point p)
         {
             Offset(p.X, p.Y);
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 1861411795;
+            hashCode = hashCode * -1521134295 + X.GetHashCode();
+            hashCode = hashCode * -1521134295 + Y.GetHashCode();
+            return hashCode;
         }
     }
 }
