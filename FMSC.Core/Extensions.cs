@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
@@ -12,6 +13,13 @@ namespace FMSC.Core
 {
     public static class Extensions
     {
+        [DllImport("shlwapi.dll", CharSet = CharSet.Unicode)]
+        private static extern int StrCmpLogicalW(string psz1, string psz2);
+
+        #region String Extensions
+        public static int CompareToNatural(this String x, String y) => StrCmpLogicalW(x, y);
+        #endregion
+
         #region Bit Extensions
         public static bool GetBit(this int value, byte bitPosition)
         {
