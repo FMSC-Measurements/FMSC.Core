@@ -6,7 +6,7 @@
     <Authors>Fortest Management Service Center</Authors>
     <Company>Fortest Management Service Center</Company>
     <AssemblyVersion>1.3.3.0</AssemblyVersion>
-    <Version>1.3.3</Version>
+    <Version>1.3.4</Version>
     <FileVersion>1.0.0.0</FileVersion>
     <Copyright>Copyright © USDA Forest Service 2024</Copyright>
   </PropertyGroup>
@@ -14,6 +14,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DebugType>none</DebugType>
     <DebugSymbols>false</DebugSymbols>
+	<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
   </PropertyGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
