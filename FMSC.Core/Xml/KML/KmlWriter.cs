@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Text;
 using System.Xml;
 
@@ -31,6 +32,13 @@ namespace FMSC.Core.Xml.KML
             Formatting = Formatting.Indented;
             Indentation = 4;
         }
+
+        public KmlWriter(Stream stream) : base(stream, Encoding.UTF8)
+        {
+            Formatting = Formatting.Indented;
+            Indentation = 4;
+        }
+
 
         public void WriteStartKml()
         {
@@ -740,9 +748,21 @@ namespace FMSC.Core.Xml.KML
         #endregion
 
 
-        public static void WriteKmlFile(string filePath, KmlDocument doc)
+        public static void WriteToFile(string filePath, KmlDocument doc)
         {
             using (KmlWriter kw = new KmlWriter(filePath))
+            {
+                kw.WriteStartDocument();
+                kw.WriteStartKml();
+                kw.WriteKmlDocument(doc);
+                kw.WriteEndKml();
+                kw.WriteEndDocument();
+            }
+        }
+
+        public static void WriteToStream(Stream stream, KmlDocument doc)
+        {
+            using (KmlWriter kw = new KmlWriter(stream))
             {
                 kw.WriteStartDocument();
                 kw.WriteStartKml();
