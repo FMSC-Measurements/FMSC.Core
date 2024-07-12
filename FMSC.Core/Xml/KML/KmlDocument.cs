@@ -89,7 +89,7 @@ namespace FMSC.Core.Xml.KML
 
 
 
-        public static KmlDocument Load(String path)
+        public static KmlDocument LoadFile(String path)
         {
             XmlDocument doc = new XmlDocument();
             
@@ -183,10 +183,10 @@ namespace FMSC.Core.Xml.KML
 
             foreach (XmlNode node in xnode.ChildNodes)
             {
-                string name = node.Attributes["name"]?.FirstChild.Value;
+                string name = node.Attributes["name"]?.FirstChild?.Value;
                 if (name != null)
                 {
-                    data.AddData(new ExtendedData.Data(name, node.FirstChild.Value));
+                    data.AddData(new ExtendedData.Data(name, node.FirstChild?.Value));
                 }
             }
 
@@ -231,7 +231,7 @@ namespace FMSC.Core.Xml.KML
                                     case "polygon":
                                     case "linestring":
                                         {
-                                            Polygon poly = ParsePolygon(node);
+                                            Polygon poly = ParsePolygon(node.FirstChild);
                                             if (poly != null) placemark.Polygons.Add(poly);
                                             break;
                                         }
@@ -629,35 +629,35 @@ namespace FMSC.Core.Xml.KML
             switch (name)
             {
                 case "name": properties.Name = xnode.FirstChild.Value; break;
-                case "description": properties.Desctription = ParseCData(xnode.FirstChild.Value); break;
+                case "description": properties.Desctription = ParseCData(xnode.FirstChild?.Value); break;
                 case "styleurl": properties.StyleUrl = xnode.FirstChild.Value; break;
                 case "visibility":
-                    if (Boolean.TryParse(xnode.FirstChild.Value, out bool vis))
+                    if (Boolean.TryParse(xnode.FirstChild?.Value, out bool vis))
                         properties.Visibility = vis;
                     break;
                 case "open":
-                    if (Boolean.TryParse(xnode.FirstChild.Value, out bool open))
+                    if (Boolean.TryParse(xnode.FirstChild?.Value, out bool open))
                         properties.Open = open;
                     break;
 
-                case "author": properties.Author = xnode.FirstChild.Value; break;
-                case "link": properties.Link = xnode.FirstChild.Value; break;
-                case "address": properties.Address = xnode.FirstChild.Value; break;
+                case "author": properties.Author = xnode.FirstChild?.Value; break;
+                case "link": properties.Link = xnode.FirstChild?.Value; break;
+                case "address": properties.Address = xnode.FirstChild?.Value; break;
                 case "snippit":
                     {
                         properties.Snippit = xnode.FirstChild.Value;
-                        if (Int32.TryParse(xnode.Attributes["maxLines"]?.FirstChild.Value, out int ml))
+                        if (Int32.TryParse(xnode.Attributes["maxLines"]?.FirstChild?.Value, out int ml))
                             properties.SnippitMaxLines = ml;
                         break;
                     }
-                case "region": properties.Region = xnode.FirstChild.Value; break;
+                case "region": properties.Region = xnode.FirstChild?.Value; break;
                 case "extendeddata": properties.ExtendedData = ParseExtendedData(xnode); break;
             }
         }
 
         private static string ParseCData(string text)
         {
-            if (String.IsNullOrWhiteSpace(text))
+            if (String.IsNullOrWhiteSpace(text) || text.ToLower().StartsWith("<html"))
                 return String.Empty;
             else if (text.StartsWith("<!"))
                 return text.Remove(text.Length - 3, 3).Remove(0, 9);
