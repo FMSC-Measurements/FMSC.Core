@@ -111,5 +111,42 @@ namespace FMSC.Core
         {
             return (nX - aX) * (bY - aY) - (nY - aY) * (bX - aX);
         }
+
+
+        public static bool PointOnSegment(Point point1, Point point2, Point pointTest)
+        {
+            if (point2.x <= Math.Max(point1.x, pointTest.x) && point2.x >= Math.Min(point1.x, pointTest.x) &&
+                point2.y <= Math.Max(point1.y, pointTest.y) && point2.y >= Math.Min(point1.y, pointTest.y))
+                return true;
+
+            return false;
+        }
+
+
+        public static PointOrientation PointsOrientation(Point point1, Point point2, Point point3)
+        {
+            double val = (point2.y - point1.y) * (point3.x - point2.x) - (point2.x - point1.x) * (point3.y - point2.y);
+
+            if (val == 0) return PointOrientation.Collinear;
+            return val > 0 ? PointOrientation.Clockwise : PointOrientation.CounterClockwise;
+        }
+
+
+        public static bool LineSegmentsIntersect(Point s1, Point e1, Point s2, Point e2)
+        {
+            var o1 = PointsOrientation(s1, e1, s2);
+            var o2 = PointsOrientation(s1, e1, e2);
+            var o3 = PointsOrientation(s2, e2, s1);
+            var o4 = PointsOrientation(s2, e2, e1);
+
+            if (o1 != o2 && o3 != o4) return true;
+            if (o1 == 0 && PointOnSegment(s1, s2, e1)) return true;
+            if (o2 == 0 && PointOnSegment(s1, e2, e1)) return true;
+            if (o3 == 0 && PointOnSegment(s2, s1, e2)) return true;
+            if (o4 == 0 && PointOnSegment(s2, e1, e2)) return true;
+
+
+            return false;
+        }
     }
 }
